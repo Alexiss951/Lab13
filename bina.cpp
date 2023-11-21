@@ -1,7 +1,7 @@
-//Sanchez Santos B. Alexis 367714
-//19/NOVIEMBRE/2023
-//CREAR, SOBRESCRIBIR Y/O CARGAR ARCHIVOS CON INFOMACION CREADA AUTOMATICAMENTE O CON INFORMACION MODIFICADA Y UTILIZAR ARCHIVOS BINARIOS
-//ARCHIVOS BINARIO
+// Sanchez Santos B. Alexis 367714
+// 19/NOVIEMBRE/2023
+// CREAR, SOBRESCRIBIR Y/O CARGAR ARCHIVOS CON INFOMACION CREADA AUTOMATICAMENTE O CON INFORMACION MODIFICADA Y UTILIZAR ARCHIVOS BINARIOS
+// ARCHIVOS BINARIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -61,50 +61,91 @@ int main()
             bandera2 = 0;
             break;
         case 2:
-            edit_reg(vct, i, bandera1);
+            if (i > 0)
+            {
+                edit_reg(vct, i, bandera1);
+            }
+            else
+            {
+                printf("\nAun no has agregado ningun registro\n");
+                system("PAUSE");
+            }
             break;
         case 3:
-            macro = vali_num4(300000, 399999, "Escribe la matricula que quieres eliminar\nRecuerda que las matriculas vasn del 300000 al 399999 ", "Favor de no poner 0s a la izquierda y dentro del rango", 6);
-            eliminar = busqueda(vct, macro, i, bandera2);
-            if (eliminar != -1)
+            if (i > 0)
             {
-                eliminar = vali_num4(1, 2, "Registro encontrado\n1-->Eliminar\n2-->Mantener ", "Esa opcion no existe", 1);
-                if (eliminar == 1)
+                macro = vali_num4(300000, 399999, "Escribe la matricula que quieres eliminar\nRecuerda que las matriculas vasn del 300000 al 399999 ", "Favor de no poner 0s a la izquierda y dentro del rango", 6);
+                eliminar = busqueda(vct, macro, i, bandera2);
+                if (eliminar != -1)
                 {
-                    printf("\nRegistro eliminado\n");
-                    system("PAUSE");
+                    eliminar = vali_num4(1, 2, "Registro encontrado\n1-->Eliminar\n2-->Mantener ", "Esa opcion no existe", 1);
+                    if (eliminar == 1)
+                    {
+                        printf("\nRegistro eliminado\n");
+                        system("PAUSE");
+                    }
+                    else
+                    {
+                        printf("\nRegistro no eliminado\n");
+                        system("PAUSE");
+                    }
                 }
                 else
                 {
-                    printf("\nRegistro no eliminado\n");
+                    printf("\nEse registro no existe\n");
                     system("PAUSE");
                 }
             }
             else
             {
-                printf("\nEse registro no existe\n");
+                printf("\nAun no has agregado ningun registro\n");
                 system("PAUSE");
             }
             break;
         case 4:
-            macro = vali_num4(300000, 399999, "Escribe la matricula \nRecuerda que las matriculas vasn del 300000 al 399999 ", "Favor de no poner 0s a la izquierda y dentro del rango", 6);
-            busq = busqueda(vct, macro, i, bandera2);
-            if (busq != -1)
+            if (i > 0)
             {
-                printf("\nLa matricula %d, es el registro N. %d\n", macro, busq);
-                system("PAUSE");
+                macro = vali_num4(300000, 399999, "Escribe la matricula \nRecuerda que las matriculas vasn del 300000 al 399999 ", "Favor de no poner 0s a la izquierda y dentro del rango", 6);
+                busq = busqueda(vct, macro, i, bandera2);
+                if (busq != -1)
+                {
+                    printf("\nLa matricula %d, es el registro N. %d\n", macro, busq);
+                    system("PAUSE");
+                }
+                else
+                {
+                    printf("\nEse registro no existe\n");
+                    system("PAUSE");
+                }
             }
             else
             {
-                printf("\nEse registro no existe\n");
+                printf("\nNo has agregado ningun registro\n");
                 system("PAUSE");
             }
             break;
         case 5:
-            bandera2 = ordenado(vct, i, bandera2);
+            if (i > 0)
+            {
+                bandera2 = ordenado(vct, i, bandera2);
+            }
+            else
+            {
+                printf("\nAun no has agregado ningun registro\n");
+                system("PAUSE");
+            }
+
             break;
         case 6:
-            impreg(vct, i);
+            if(i>0)
+            {
+                impreg(vct, i);
+            }
+            else
+            {
+                printf("\nAun no has agregado ningun registro\n");
+                system("PAUSE");
+            }
             break;
         case 7:
             if (i > 0)
@@ -131,31 +172,22 @@ int main()
             leerarch(archivo2);
             break;
         case 9:
-            if (bandera5 == 0)
+            if (i > 0)
             {
-                if (i == 5000)
+                if (bandera5 == 0)
                 {
-                    if (bandera2 == 1)
-                    {
-                        nombarch2(archrio, archrio2);
-                        gen_arch_bin(vct, i, archrio, archrio2);
-                        bandera5 = 1;
-                    }
-                    else
-                    {
-                        printf("\nPrimero debes ordenar los registros\n");
-                        system("PAUSE");
-                    }
+                    nombarch2(archrio, archrio2);
+                    gen_arch_bin(vct, i, archrio, archrio2);
+                    bandera5 = 1;
                 }
                 else
                 {
-                    printf("\nPrimero debes completar los 5000 registros\n");
-                    system("PAUSE");
+                    gen_arch_bin(vct, i, archrio, archrio2);
                 }
             }
             else
             {
-                printf("\nYa has creado el archivo binario\n");
+                printf("\nAun no has agregado ningun registro\n");
                 system("PAUSE");
             }
             break;
@@ -540,14 +572,14 @@ void gen_arch_bin(Tdato vect[5000], int n, char name[30], char name2[30])
     int i;
     FILE *fa;
     FILE *gb;
-    fa = fopen(name, "ab");
+    fa = fopen(name, "wb");
     for (i = 0; i < n; i++)
     {
         reg = vect[i];
         fwrite(&reg, sizeof(Tdato), 1, fa);
     }
     fclose(fa);
-    gb = fopen(name2, "ab");
+    gb = fopen(name2, "wb");
     for (i = 0; i < n; i++)
     {
         reg = vect[i];
